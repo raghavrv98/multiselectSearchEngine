@@ -50,17 +50,16 @@ const Home = () => {
 
   const dataFromChild = _.debounce((title) => {
     let cachedData = cacheHandler(fetchData)(title);
-    console.log('cachedData: ---', cachedData);
     updateApiData(cachedData);
   }, 300);
-
-  console.log("cachedObj: ", cachedObj);
-
 
   return (
     <>
       <div className="container">
-        <h1>Please Select any Option</h1>
+        <h1>Steps to search</h1>
+        <h3>1. Please Search any thing as Cat, Dog..etc in the search box</h3>
+        <h3>2. Then Select any Option</h3>
+        <h3>3. Click the search button for searching results</h3>
         <MultiSelect
           data={apiData}
           loading={loading}

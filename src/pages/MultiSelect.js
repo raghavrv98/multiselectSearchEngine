@@ -3,7 +3,6 @@ import "../App.css";
 
 const MultiSelect = (props) => {
   const { data, loading, dataFromChild, errorMsg } = props;
-  // console.log('data: ---', data);
 
   const [selectedValues, updateSelectedValues] = useState([]);
   const [typedValue, updateTypedValue] = useState("");
@@ -13,8 +12,8 @@ const MultiSelect = (props) => {
 
   //To make copy for original Data
   useEffect(() => {
-    const filteredData = data ? [...data] : [];
-    updateFilteredData(filteredData);
+    const currentFilteredData = data ? [...data] : [];
+    updateFilteredData(currentFilteredData);
   }, [data, loading]);
 
   //Function to handle for dynamic search
@@ -24,8 +23,9 @@ const MultiSelect = (props) => {
     let currentFilteredArray = currentFilteredData?.filter((val) =>
       val.API.toLowerCase().includes(value.toLowerCase())
     );
-
-    dataFromChild(value);
+    if (value.length > 0) {
+      dataFromChild(value);
+    }
 
     updateFilteredData(currentFilteredArray);
     updateTypedValue(value);
@@ -72,7 +72,6 @@ const MultiSelect = (props) => {
 
     updateSelectedValues(currentSelectedValues);
     updateFilteredData(currentFilteredData);
-    updateSubmitResult("");
   };
 
   // Function to handle clear every filter
@@ -88,6 +87,16 @@ const MultiSelect = (props) => {
   // Function to handle checkbox data
   const checkedHandler = (index) => {
     const currentFilteredData = [...filteredData];
+    let currentSelectedValues = [...selectedValues];
+
+    if (currentFilteredData.length > 0) {
+      currentSelectedValues.map(val => {
+        const changedIndex = currentFilteredData.findIndex(value => value.API === val.API)
+        if (changedIndex >= 0) {
+          currentFilteredData[changedIndex].checked = val.checked
+        }
+      })
+    }
 
     return currentFilteredData[index]?.checked || false;
   };
@@ -102,45 +111,45 @@ const MultiSelect = (props) => {
 
   return (
     <>
-      <div className="inputChipContainer">
-        {selectedValues.length > 0 && (
-          <ul className="chipUl">
-            {selectedValues.map((val, index) => (
-              <li key={index} className="chip">
-                <button
-                  onClick={() => onRemoveHandler(index)}
-                  className="removeChip"
-                >
-                  X
-                </button>
-                {val.API}
-              </li>
-            ))}
-          </ul>
-        )}
-        <input
-          className="multiSelectInputField"
-          onChange={onSearchHandler}
-          // onFocus={onFocusHandler}
-          value={typedValue}
-          style={{
-            width: `calc(100% - ${(document.getElementsByClassName("chip").length + 1) * 11
-              }%)`,
-          }}
-        />
-        {displayOptions && !loading && !errorMsg && (
-          <span onClick={onCloseOptionMenuHandler} className="closeOptionMenu">
-            X
-          </span>
-        )}
+      <div className="searchBox">
+        <div className="inputChipContainer">
+          {selectedValues.length > 0 && (
+            <ul className="chipUl">
+              {selectedValues.map((val, index) => (
+                <li key={index} className="chip">
+                  <button
+                    onClick={() => onRemoveHandler(index)}
+                    className="removeChip"
+                  >
+                    X
+                  </button>
+                  {val.API}
+                </li>
+              ))}
+            </ul>
+          )}
+          <input
+            className="multiSelectInputField"
+            onChange={onSearchHandler}
+            value={typedValue}
+            style={{
+              width: `calc(100% - ${(document.getElementsByClassName("chip").length + 1) * 11
+                }%)`,
+            }}
+          />
+          {(displayOptions || selectedValues.length > 0) && !loading && !errorMsg && (
+            <span onClick={onCloseOptionMenuHandler} className="closeOptionMenu">
+              X
+            </span>
+          )}
+        </div>
+        <button
+          onClick={submitHandler}
+          className={selectedValues.length > 0 ? "searchButton" : "searchDisable"}
+        >
+          Search
+        </button>
       </div>
-      <button
-        onClick={submitHandler}
-        className={selectedValues.length > 0 ? "searchButton" : "searchDisable"}
-      >
-        Search
-      </button>
-
       {loading && !errorMsg ? (
         <p className="loadingText">Please Wait... Data is Fetching..</p>
       ) : errorMsg ? (
@@ -154,12 +163,12 @@ const MultiSelect = (props) => {
                   return (
                     <li
                       className="dropdownLi"
-                      onClick={() => onClickOptionHandler(index)}
                       key={index}
                     >
                       <span>
                         <input
                           checked={checkedHandler(index)}
+                          onChange={() => onClickOptionHandler(index)}
                           className="checkbox"
                           type="checkbox"
                         />

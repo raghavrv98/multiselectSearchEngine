@@ -4,21 +4,14 @@ Q. what are some ways to prevent unnecessary re-renders in react, and when would
 There are several ways to prevent re-renders in React, depending on the certain conditions. Here are some common techniques:
 
 Use React.memo: React.memo is a higher-order component that memoizes the result of the component rendering. This means that it will only re-render the component if the props have changed.
-
 Use shouldComponentUpdate: shouldComponentUpdate is a lifecycle method that allows us to control whether a component should re-render or not. we can implement a custom comparison function to check if the props or state have changed and return true or false to indicate whether the component should update. This technique is particularly useful for optimizing class-based components.
-
 Use useCallback and useMemo: useCallback and useMemo are hooks that allow us to memoize functions and values respectively. useCallback will return a memoized function that will only be recreated if its dependencies have changed. useMemo will return a memoized value that will only be recomputed if its dependencies have changed. 
-
 Use PureComponent: PureComponent is a class-based component that automatically implements shouldComponentUpdate with a shallow prop and state comparison. This means that the component will only re-render if the prop or state references have changed. This technique can be useful for optimizing class-based components.
 
 When to use each technique:
-
 Use React.memo when we have a functional component that depends on props that don't change frequently.
-
 Use shouldComponentUpdate when we have a class-based component that depends on props or state that don't change frequently.
-
 Use useCallback and useMemo when we have a function or value that depends on expensive computations or functions.
-
 Use PureComponent when we have a class-based component that depends on props or state that don't change frequently.
 
 ------------------------------------------------------------------------------------------------------------------
@@ -30,19 +23,13 @@ Q. what are some practical uses of React Context and React Hooks?
 React Context:
 
 Theme: we can use React Context to provide a theme to our entire app, and allow components to use the theme information from the React Context.
-
 User authentication and authorization: we can use React Context to manage user authentication and authorization across the app, and make the user information available to all components.
-
 Multilingual support: we can use React Context to manage the language used in our app, and allow components to consume the language information from the context API.
 
 React Hooks:
-
 State management: we can use React Hooks, such as useState and useReducer, to manage state within a functional component without having to create a separate class component.
-
 lifecycle methods: we can use React Hooks, such as useEffect and useLayoutEffect, to handle side effects, such as fetching data from an API or subscribing to events, in a functional component.
-
 Refs: we can use the useRef Hook to create a reference to a DOM element or a value that persists across renders, and manipulate it in response to user actions or events.
-
 Custom Hooks: we can create our own custom Hooks to reuse stateful logic across multiple components, and keep our code more modular and reusable.
 
 ------------------------------------------------------------------------------------------------------------------
@@ -50,7 +37,15 @@ Custom Hooks: we can create our own custom Hooks to reuse stateful logic across 
 
 Q. What are some other ways caching could be implemented for Part 1? what are the differences and why might you choose one over the other?
 ------------------------------------------------------------------------------------------------------------------
+I am using my own cache Object to optimizing the performance that limits the API call. And if data is already in the object then there is no API call.
 
+Caching is a technique that is used to improve performance by storing frequently accessed data in a fast-access location. While the most common form of caching involves storing data in memory, there are several other ways that caching could be implemented:
+
+Database caching: Database caching involves storing frequently accessed data in a database cache, such as Redis or Memcached, to reduce the amount of time it takes to access the data from the database.
+
+Client-side caching: In client-side caching, data is stored in the browser's cache, which allows the browser to quickly access the data without having to request it from the server. This technique is commonly used in web development to improve the performance of web applications.
+
+Content delivery network (CDN) caching: A CDN caches content, such as images or videos, in multiple locations around the world to reduce the latency of serving the content to users in different locations.
 
 ------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------
