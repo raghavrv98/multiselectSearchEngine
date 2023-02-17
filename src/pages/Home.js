@@ -11,7 +11,7 @@ const Home = () => {
   const [errorMsg, updateErrorMsg] = useState("");
   const [cachedObj, updateCachedObj] = useState({});
 
-  const fetchData = (title) => {
+  const fetchData = (title, enableCache) => {
     const currentCachedObj = JSON.parse(JSON.stringify(cachedObj));
     const url = title
       ? `https://api.publicapis.org/entries?title=${title}`
@@ -21,8 +21,10 @@ const Home = () => {
       .then(function (response) {
         const data = response?.data?.entries;
         updateLoading(false);
-        currentCachedObj[title] = JSON.stringify(data);
-        updateCachedObj(currentCachedObj);
+        if (enableCache) {
+          currentCachedObj[title] = JSON.stringify(data);
+          updateCachedObj(currentCachedObj);
+        }
         updateApiData(data)
         return data;
       })
@@ -35,22 +37,27 @@ const Home = () => {
 
   //Function for handling cache
   const cacheHandler = (func) => {
-    return (title) => {
+    return (title, enableCache) => {
       const currentCachedObj = JSON.parse(JSON.stringify(cachedObj));
 
       if (title in currentCachedObj) {
         return JSON.parse(currentCachedObj[title]);
       } else {
         updateLoading(true)
-        func(title)
+        func(title, enableCache)
         return null
       }
     };
   };
 
-  const dataFromChild = _.debounce((title) => {
-    let cachedData = cacheHandler(fetchData)(title);
-    updateApiData(cachedData);
+  const dataFromChild = _.debounce((title, enableCache) => {
+    if (enableCache) {
+      let cachedData = cacheHandler(fetchData)(title, enableCache);
+      updateApiData(cachedData);
+    }
+    else {
+      fetchData(title, enableCache);
+    }
   }, 300);
 
   return (
@@ -65,6 +72,7 @@ const Home = () => {
           loading={loading}
           dataFromChild={dataFromChild}
           errorMsg={errorMsg}
+          enableCache={true}
         />
       </div>
     </>

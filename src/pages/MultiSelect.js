@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../App.css";
 
 const MultiSelect = (props) => {
-  const { data, loading, dataFromChild, errorMsg } = props;
+  const { data, loading, dataFromChild, errorMsg, enableCache } = props;
 
   const [selectedValues, updateSelectedValues] = useState([]);
   const [typedValue, updateTypedValue] = useState("");
@@ -23,13 +23,17 @@ const MultiSelect = (props) => {
     let currentFilteredArray = currentFilteredData?.filter((val) =>
       val.API.toLowerCase().includes(value.toLowerCase())
     );
+    
     if (value.length > 0) {
-      dataFromChild(value);
+      dataFromChild(value, enableCache);
+      updateDisplayOptions(true);
+    }
+    else {
+      updateDisplayOptions(false);
     }
 
     updateFilteredData(currentFilteredArray);
     updateTypedValue(value);
-    updateDisplayOptions(true);
   };
 
   // Function to handle onclick on given options
