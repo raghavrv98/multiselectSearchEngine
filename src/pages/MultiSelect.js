@@ -104,7 +104,6 @@ const MultiSelect = (props) => {
   // Function to handle submission
   const submitHandler = () => {
     if (selectedValues.length === 0 && typedValue.length === 0) return null;
-    selectedValues.map((val) => delete val.checked);
     updateSubmitResult(selectedValues);
     updateDisplayOptions(false);
   };
