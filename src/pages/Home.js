@@ -25,7 +25,7 @@ const Home = () => {
           currentCachedObj[title] = JSON.stringify(data);
           updateCachedObj(currentCachedObj);
         }
-        updateApiData(data)
+        updateApiData(data);
         return data;
       })
       .catch(function (error) {
@@ -33,7 +33,6 @@ const Home = () => {
         updateLoading(false);
       });
   };
-
 
   //Function for handling cache
   const cacheHandler = (func) => {
@@ -43,9 +42,9 @@ const Home = () => {
       if (title in currentCachedObj) {
         return JSON.parse(currentCachedObj[title]);
       } else {
-        updateLoading(true)
-        func(title, enableCache)
-        return null
+        updateLoading(true);
+        func(title, enableCache);
+        return null;
       }
     };
   };
@@ -54,8 +53,7 @@ const Home = () => {
     if (enableCache) {
       let cachedData = cacheHandler(fetchData)(title, enableCache);
       updateApiData(cachedData);
-    }
-    else {
+    } else {
       fetchData(title, enableCache);
     }
   }, 300);
@@ -64,9 +62,9 @@ const Home = () => {
     <>
       <div className="container">
         <h1>Steps to search</h1>
-        <h3>1. Please Search any thing as Cat, Dog..etc in the search box</h3>
-        <h3>2. Then Select any Option</h3>
-        <h3>3. Click the search button for searching results</h3>
+        <h3>1. Please Search anything as Cat, Dog..etc in the search box</h3>
+        <h3>2. Then Select an Option</h3>
+        <h3>3. Click the search button for search results</h3>
         <MultiSelect
           data={apiData}
           loading={loading}

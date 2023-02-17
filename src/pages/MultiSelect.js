@@ -23,12 +23,11 @@ const MultiSelect = (props) => {
     let currentFilteredArray = currentFilteredData?.filter((val) =>
       val.API.toLowerCase().includes(value.toLowerCase())
     );
-    
+
     if (value.length > 0) {
       dataFromChild(value, enableCache);
       updateDisplayOptions(true);
-    }
-    else {
+    } else {
       updateDisplayOptions(false);
     }
 
@@ -94,12 +93,14 @@ const MultiSelect = (props) => {
     let currentSelectedValues = [...selectedValues];
 
     if (currentFilteredData.length > 0) {
-      currentSelectedValues.map(val => {
-        const changedIndex = currentFilteredData.findIndex(value => value.API === val.API)
+      currentSelectedValues.map((val) => {
+        const changedIndex = currentFilteredData.findIndex(
+          (value) => value.API === val.API
+        );
         if (changedIndex >= 0) {
-          currentFilteredData[changedIndex].checked = val.checked
+          currentFilteredData[changedIndex].checked = val.checked;
         }
-      })
+      });
     }
 
     return currentFilteredData[index]?.checked || false;
@@ -136,19 +137,27 @@ const MultiSelect = (props) => {
             onChange={onSearchHandler}
             value={typedValue}
             style={{
-              width: `calc(100% - ${(document.getElementsByClassName("chip").length + 1) * 11
-                }%)`,
+              width: `calc(100% - ${
+                (document.getElementsByClassName("chip").length + 1) * 11
+              }%)`,
             }}
           />
-          {(displayOptions || selectedValues.length > 0) && !loading && !errorMsg && (
-            <span onClick={onCloseOptionMenuHandler} className="closeOptionMenu">
-              X
-            </span>
-          )}
+          {(displayOptions || selectedValues.length > 0) &&
+            !loading &&
+            !errorMsg && (
+              <span
+                onClick={onCloseOptionMenuHandler}
+                className="closeOptionMenu"
+              >
+                X
+              </span>
+            )}
         </div>
         <button
           onClick={submitHandler}
-          className={selectedValues.length > 0 ? "searchButton" : "searchDisable"}
+          className={
+            selectedValues.length > 0 ? "searchButton" : "searchDisable"
+          }
         >
           Search
         </button>
@@ -164,10 +173,7 @@ const MultiSelect = (props) => {
               <ul>
                 {filteredData.map((val, index) => {
                   return (
-                    <li
-                      className="dropdownLi"
-                      key={index}
-                    >
+                    <li className="dropdownLi" key={index}>
                       <span>
                         <input
                           checked={checkedHandler(index)}
